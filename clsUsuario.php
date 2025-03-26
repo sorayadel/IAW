@@ -1,5 +1,7 @@
 <?php
-require_once 'conexion.php';
+
+require_once 'connexion.php';
+
 class User extends Connexion {
     public $id;
     public $nombre;
@@ -8,6 +10,9 @@ class User extends Connexion {
     public $codigo;
     public $horas;
     public $rol;
+
+
 }
+
 ?>  
 

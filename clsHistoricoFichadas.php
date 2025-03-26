@@ -1,5 +1,5 @@
 <?php
-    require_once 'conexion.php';
+    require_once 'connexion.php';
     require_once 'clsUsuario.php';
     require_once 'fichar.php';
     class User extends Connexion{
@@ -54,7 +54,7 @@
     }
 
     $usuario_id = $_SESSION['usuario_id'];  // Supongamos que usas sesiones para el usuario, impedir que fiche dos veces seguidas.
-    $ultimo_fichaje = $conexion->query("SELECT tipo_fichaje FROM fichajes WHERE usuario_id = '$usuario_id' ORDER BY fecha DESC LIMIT 1");
+    $ultimo_fichaje = $connexion->query("SELECT tipo_fichaje FROM fichajes WHERE usuario_id = '$usuario_id' ORDER BY fecha DESC LIMIT 1");
     
     if ($ultimo_fichaje->num_rows > 0) {
         $ultimo = $ultimo_fichaje->fetch_assoc();
@@ -70,10 +70,10 @@
     $sql = "INSERT INTO fichajes (usuario_id, tipo_fichaje, fecha) 
             VALUES ('$usuario_id', '$tipo_fichaje', NOW())";
 
-    if ($conexion->query($sql) === TRUE) {
+    if ($connexion->query($sql) === TRUE) {
         echo "Fichaje registrado con éxito.";
     } else {
-        echo "Error al registrar el fichaje: " . $conexion->error;
+        echo "Error al registrar el fichaje: " . $connexion->error;
     }
 
     ?>

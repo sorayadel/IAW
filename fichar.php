@@ -1,6 +1,6 @@
 <?php
 session_start(); // Debe ir al principio
-include('conexion.php'); // Asegúrate de incluir el archivo de conexión
+include('connexion.php'); // Asegúrate de incluir el archivo de conexión
 
 // Verificar si se ha enviado el formulario
 if (isset($_POST['tipo_fichaje'])) {
@@ -8,7 +8,7 @@ if (isset($_POST['tipo_fichaje'])) {
     $usuario_id = $_SESSION['usuario_id'];
 
     // Consulta para obtener el último fichaje
-    $stmt = $conexion->prepare("SELECT tipo_fichaje FROM fichajes WHERE usuario_id = ? ORDER BY fecha DESC LIMIT 1");
+    $stmt = $connexion->prepare("SELECT tipo_fichaje FROM fichajes WHERE usuario_id = ? ORDER BY fecha DESC LIMIT 1");
     $stmt->bind_param("i", $usuario_id);
     $stmt->execute();
     $ultimo_fichaje = $stmt->get_result();
@@ -23,19 +23,19 @@ if (isset($_POST['tipo_fichaje'])) {
     }
 
     // Registrar el fichaje
-    $stmt = $conexion->prepare("INSERT INTO fichajes (usuario_id, tipo_fichaje, fecha) VALUES (?, ?, NOW())");
+    $stmt = $connexion->prepare("INSERT INTO fichajes (usuario_id, tipo_fichaje, fecha) VALUES (?, ?, NOW())");
     $stmt->bind_param("is", $usuario_id, $tipo_fichaje);
     
     if ($stmt->execute()) {
         echo "Fichaje registrado con éxito.";
     } else {
-        echo "Error al registrar el fichaje: " . $conexion->error;
+        echo "Error al registrar el fichaje: " . $connexion->error;
     }
 }
 
 // Mostrar historial de fichajes
 $usuario_id = $_SESSION['usuario_id'];
-$result = $conexion->query("SELECT tipo_fichaje, fecha FROM fichajes WHERE usuario_id = '$usuario_id' ORDER BY fecha DESC");
+$result = $connexion->query("SELECT tipo_fichaje, fecha FROM fichajes WHERE usuario_id = '$usuario_id' ORDER BY fecha DESC");
 
 echo "<h2>Historial de Fichajes</h2>";
 if ($result->num_rows > 0) {
