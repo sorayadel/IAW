@@ -1,5 +1,5 @@
 <?php	
-    class Connexion {
+    class Conexion {
         
         public function conecta(){
             try {

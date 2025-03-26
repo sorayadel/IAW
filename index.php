@@ -16,16 +16,16 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
       <?php
-        require_once 'connexion.php';
-        $conn = new Connexion();
+        require_once 'conexion.php';
+        $conn = new conexion();
         $login = false;
         require 'clsUsuario.php';
-            if (isset($_GET['login'])) {
+
+            if (isset($_POST['login'])) {
                 $user = new User();
-                $user->email = $_GET['email'];
+                $user->email = $_POST['email'];
                 $respuesta = true;
-                $user->pass = $_GET['pass'];
-                $hashpass = md5($user->pass);
+                $hashpass = md5($_POST['pass']);
                 $user->pass = $hashpass;
                 $respuesta = $user->login();
                 
@@ -54,7 +54,7 @@
                     }
             }
         ?>
-      <form method="get" name="login">
+      <form method="POST" name="login">
         <div class="#">
           <label for="email" class="form-label">Email</label>
           <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
