@@ -2,7 +2,7 @@
     require_once 'conexion.php';
     require_once 'clsUsuario.php';
     require_once 'fichar.php';
-    class User extends conexion{
+    class User extends Conexion{
         public $id;
         public $nombre;
         public $email;
