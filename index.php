@@ -54,10 +54,10 @@
             if (!isset($_SESSION['usuario'])) {
               $_SESSION['user'] = $user;
 
-              if ($user->getRol() == 'Admin') {
-                header('');
+              if ($user->getRol() == 'admin') {
+                header('Location: gestionfichadas.php');
               } else {
-                header('');  
+                header('Location: fichar.php');
               }
             }
           }
