@@ -19,7 +19,9 @@
     <body>
 
     <?php if ($error): ?>
-        <p style="color: red;"><?php echo $error; ?></p>
+      <div class="alert alert-danger" role="alert">
+        <?php echo $error; ?>
+      </div>
     <?php endif; ?>
 
       <h1>Login</h1>
@@ -27,29 +29,30 @@
 
       <?php
         if (isset($_POST['login'])) {
+          if(empty($_POST['email']) || empty($_POST['pass'])) {
+            $_SESSION["error"] = "La contraseña y el email no pueden estar vacíos";
+            header("Location: index.php");
+            die;
+          }
+          
           require 'clsUsuario.php';
           $user = new Usuario();
-          $user->email = $_POST['email'];
-          $respuesta = true;
+          $user->setEmail($_POST['email']);
           $hashpass = md5($_POST['pass']);
-          $user->pass = $hashpass;
+          $user->setPass($hashpass);
           
           try {
             $respuesta = $user->login();
+            if(!$respuesta) throw new Exception("El usuario no es correcto o no existe");
           } catch (Exception $e) {
             $_SESSION["error"] = $e->getMessage();
             header("Location: index.php");
+            die;
           }
 
-          var_dump($respuesta);
-          die;
-            
           if ($respuesta) {
-            if (!isset($_SESSION['rol'])) {
-              $_SESSION['id'] = $user->getId();
-              $_SESSION['email'] = $user->getEmail();
-              $_SESSION['nombre'] = $user->getNombre();
-              $_SESSION['rol'] = $user->getRol();
+            if (!isset($_SESSION['usuario'])) {
+              $_SESSION['user'] = $user;
 
               if ($user->getRol() == 'Admin') {
                 header('');
@@ -57,9 +60,6 @@
                 header('');  
               }
             }
-          } else{
-            $login = false;
-            echo "Su email o contraseña no son correctos, por favor, vuelva a intentarlo";
           }
         }
       ?>
