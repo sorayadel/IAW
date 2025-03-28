@@ -17,7 +17,7 @@ class Usuario extends Conexion {
         $bd_conexion->bindParam(':email', $this->email);
         $bd_conexion->bindParam(':password', $this->pass);
         $bd_conexion->execute();
-        $respuesta = $bd_conexion->fetch();
+        $respuesta = $bd_conexion->fetch(PDO::FETCH_ASSOC);
         
         if(!$respuesta) return false;
 
@@ -62,6 +62,17 @@ class Usuario extends Conexion {
 
     public function setPass($password) {
         $this->pass = $password;
+    }
+
+    public function listar() {
+        $sql = "SELECT nombre, email, codigo, horas, rol FROM usuarios";
+        $bd_conexion = $this->conecta()->prepare($sql);
+        $bd_conexion->execute();
+        $respuesta = $bd_conexion->fetchAll(PDO::FETCH_ASSOC);
+        
+        if(!$respuesta) return false;
+
+        return $respuesta;
     }
 }
 
