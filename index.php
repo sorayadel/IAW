@@ -2,8 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
-$error = isset($_SESSION['error']) ? $_SESSION['error'] : '';
-unset($_SESSION['error']);
+
 ?>
 
 <!DOCTYPE html>
@@ -19,9 +18,10 @@ unset($_SESSION['error']);
       <div class="col-12">
         <?php require_once "cabecera.php"; ?>
 
-        <?php if ($error): ?>
+        <?php if ($_SESSION['error']): ?>
           <div class="alert alert-danger" role="alert">
-            <?php echo $error; ?>
+            <?php echo $_SESSION['error']; ?>
+            <?php unset($_SESSION['error']); ?>
           </div>
         <?php endif; ?>
 

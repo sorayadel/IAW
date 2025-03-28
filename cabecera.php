@@ -1,9 +1,8 @@
-<header>
+<header class="mb-3">
   <?php
   if (session_status() === PHP_SESSION_NONE) {
     session_start();
   }
-  var_dump($_SESSION);
   ?>
 
   <div>
