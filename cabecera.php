@@ -16,7 +16,7 @@
           <a class="nav-link" href="gestionusuarios.php">Listado usuarios</a>
           <a class="nav-link" href="gestionfichadas.php">Gestion fichadas</a>
         </nav>
-      <?php elseif (isset($_SESSION["usuario"]) && $_SESSION["usuario"]["rol"] === "usuario"): ?>
+      <?php elseif (isset($_SESSION["usuario"]) && $_SESSION["usuario"]["rol"] === "user"): ?>
         <nav class="nav">
           <a class="nav-link" href="fichar.php">Mis fichadas</a>
         </nav>
@@ -33,6 +33,4 @@
       <?php endif; ?>
     </div>
   </div>
-
-
 </header>
