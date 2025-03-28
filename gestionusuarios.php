@@ -6,6 +6,9 @@
 </head>
 
 <body>
+    <?php 
+        require_once "cabecera.php";
+    ?>
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -13,7 +16,6 @@
                 if (session_status() === PHP_SESSION_NONE) {
                     session_start();
                 }
-                require_once "cabecera.php";
                 require_once "clsUsuario.php";
                 ?>
 
@@ -41,8 +43,8 @@
                         !empty($_POST["contrasena"]) &&
                         !empty($_POST["rol"])
                     ) {
-                        $nuevoUsuario = new Usuario();
-                        $respuestaCrear = $nuevoUsuario->crear(
+                        $nuevo_usuario = new Usuario();
+                        $respuestaCrear = $nuevo_usuario->crear(
                             $_POST["nombre"],
                             $_POST["codigo"],
                             $_POST["horas"],
@@ -63,8 +65,21 @@
                     }
 
                     ?>
-                <?php elseif (isset($_GET["accion"]) && $_GET["accion"] === "actualizar"): ?>
+                <?php elseif (isset($_GET["accion"]) && $_GET["accion"] === "editar"): ?>
                     // @TODO
+                <?php elseif (isset($_GET["accion"]) && $_GET["accion"] === "eliminar"): ?>
+                    <?php
+                    if (!empty(isset($_GET["id"]))) {
+                        if($_SESSION["usuario"]["id"] === (int) $_GET["id"]) {
+                            $_SESSION["error"] = "No puedes eliminar tu propio usuario";
+                            header("Location: gestionusuarios.php");
+                            die;
+                        } else {
+                            $usuario_eliminar = new Usuario();
+                            $usuario_eliminar->eliminar((int) $_GET["id"]);
+                        }
+                    }
+                    ?>
                 <?php endif; ?>
 
                 <div class="card mt-3">
@@ -128,8 +143,17 @@
                                 <td><?php echo $usuario_tabla["email"] ?></td>
                                 <td><?php echo $usuario_tabla["rol"] ?></td>
                                 <td>
-                                    <a href="gestionusuarios.php?id=<?php echo $usuario_tabla["id"] ?>&amp;accion=editar" class="btn btn-warning btn-sm">Editar</a>
-                                    <a href="gestionusuarios.php?id=<?php echo $usuario_tabla["id"] ?>&amp;accion=eliminar" class="btn btn-danger btn-sm">Borrar</a>
+                                    <a
+                                        href="gestionusuarios.php?id=<?php echo $usuario_tabla["id"] ?>&amp;accion=editar"
+                                        class="btn btn-warning btn-sm"
+                                    >
+                                        Editar</a>
+                                    <a
+                                        href="gestionusuarios.php?id=<?php echo $usuario_tabla["id"] ?>&amp;accion=eliminar"
+                                        class="btn btn-danger btn-sm <?php if ($usuario_tabla["id"] === $_SESSION["usuario"]["id"]): ?>disabled<?php endif; ?>"
+                                    >
+                                        Borrar
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

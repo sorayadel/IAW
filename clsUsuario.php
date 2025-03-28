@@ -115,4 +115,13 @@ class Usuario extends Conexion
 
         return true;
     }
+
+    public function eliminar($id_usuario) {
+        $sql = "DELETE FROM usuarios WHERE id = :id";
+        $bd_conexion = $this->conecta()->prepare($sql);
+        $bd_conexion->bindParam(':id', $id_usuario);
+        $respuesta = $bd_conexion->execute();
+
+        return $respuesta;
+    }
 }

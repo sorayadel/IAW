@@ -36,13 +36,13 @@ if (session_status() === PHP_SESSION_NONE) {
           }
 
           require 'clsUsuario.php';
-          $user = new Usuario();
-          $user->setEmail($_POST['email']);
+          $usuario = new Usuario();
+          $usuario->setEmail($_POST['email']);
           $hashpass = md5($_POST['pass']);
-          $user->setPass($hashpass);
+          $usuario->setPass($hashpass);
 
           try {
-            $respuesta = $user->login();
+            $respuesta = $usuario->login();
             if (!$respuesta) throw new Exception("El usuario no es correcto o no existe");
           } catch (Exception $e) {
             $_SESSION["error"] = $e->getMessage();
@@ -52,13 +52,14 @@ if (session_status() === PHP_SESSION_NONE) {
 
           if ($respuesta) {
             if (!isset($_SESSION['usuario'])) {
-              $_SESSION['user']["nombre"] = $user->getNombre();
-              $_SESSION['user']["email"] = $user->getEmail();
-              $_SESSION['user']["codigo"] = $user->getCodigo();
-              $_SESSION['user']["horas"] = $user->getHoras();
-              $_SESSION['user']["rol"] = $user->getRol();
+              $_SESSION['usuario']["id"] = $usuario->getId();
+              $_SESSION['usuario']["nombre"] = $usuario->getNombre();
+              $_SESSION['usuario']["email"] = $usuario->getEmail();
+              $_SESSION['usuario']["codigo"] = $usuario->getCodigo();
+              $_SESSION['usuario']["horas"] = $usuario->getHoras();
+              $_SESSION['usuario']["rol"] = $usuario->getRol();
 
-              if ($user->getRol() == 'admin') {
+              if ($usuario->getRol() == 'admin') {
                 header('Location: gestionfichadas.php');
               } else {
                 header('Location: fichar.php');
