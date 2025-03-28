@@ -18,7 +18,7 @@ if (session_status() === PHP_SESSION_NONE) {
       <div class="col-12">
         <?php require_once "cabecera.php"; ?>
 
-        <?php if ($_SESSION['error']): ?>
+        <?php if (isset($_SESSION['error'])): ?>
           <div class="alert alert-danger" role="alert">
             <?php echo $_SESSION['error']; ?>
             <?php unset($_SESSION['error']); ?>
@@ -70,13 +70,13 @@ if (session_status() === PHP_SESSION_NONE) {
         <form method="POST" name="login">
           <div>
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
+            <input type="email" class="form-control" name="email" required>
           </div>
           <div>
             <label for="pass" class="form-label">Contraseña</label>
             <input type="password" class="form-control" name="pass">
           </div>
-          <button type="submit" class="btn btn-primary mt-2" name="login" value="login">Login</button>
+          <button type="submit" class="btn btn-primary mt-2" name="login" value="login" required>Login</button>
         </form>
       </div>
     </div>
