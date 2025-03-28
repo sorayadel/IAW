@@ -63,13 +63,44 @@
               die;
             }
           }
-
+          ?>
+        <?php elseif (isset($_GET["accion"]) && $_GET["accion"] === "cargar_editar"): ?>
+          <?php
+          if (isset($_GET["id"])) {
+            $usuario_c_e = new Usuario();
+            $usuario_c_e->cargar($_GET["id"]);
+          }
           ?>
         <?php elseif (isset($_GET["accion"]) && $_GET["accion"] === "editar"): ?>
-          // @TODO
+          <?php
+          if (isset($_GET["id"])) {
+            $usuario_editar = new Usuario();
+            $respuestaEditar = $usuario_editar->editar(
+              $_GET["id"],
+              [
+                "nombre" => $_POST["nombre"],
+                "codigo" => $_POST["codigo"],
+                "horas" => $_POST["horas"],
+                "email" => $_POST["email"],
+                "contrasena" => $_POST["contrasena"],
+                "rol" => $_POST["rol"]
+              ]
+            );
+
+            if (!$respuestaEditar) {
+              $_SESSION["error"] = "Error al editar el usuario";
+              header("Location: gestionusuarios.php");
+              die;
+            } else {
+              $_SESSION["mensaje"] = "Usuario actualizado con éxito";
+              header("Location: gestionusuarios.php");
+              die;
+            }
+          }
+          ?>
         <?php elseif (isset($_GET["accion"]) && $_GET["accion"] === "eliminar"): ?>
           <?php
-          if (!empty(isset($_GET["id"]))) {
+          if (isset($_GET["id"])) {
             if ($_SESSION["usuario"]["id"] === (int) $_GET["id"]) {
               $_SESSION["error"] = "No puedes eliminar tu propio usuario";
               header("Location: gestionusuarios.php");
@@ -77,6 +108,9 @@
             } else {
               $usuario_eliminar = new Usuario();
               $usuario_eliminar->eliminar((int) $_GET["id"]);
+              $_SESSION["mensaje"] = "Usuario eliminado con éxito";
+              header("Location: gestionusuarios.php");
+              die;
             }
           }
           ?>
@@ -84,35 +118,85 @@
 
         <div class="card mt-3">
           <div class="card-body">
-            <form method="POST" action="gestionusuarios.php?accion=crear">
+            <form
+              method="POST"
+              <?php if (isset($usuario_c_e)): ?>
+              action="gestionusuarios.php?accion=editar&id=<?php echo $usuario_c_e->getId() ?>"
+              <?php else: ?>
+              action="gestionusuarios.php?accion=crear"
+              <?php endif; ?>>
               <div class="form-group">
                 <label for="nombre">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" maxlength="255" required>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombre"
+                  name="nombre"
+                  maxlength="255"
+                  required
+                  <?php if (isset($usuario_c_e)): ?>value="<?php echo $usuario_c_e->getNombre() ?>" <?php endif; ?>>
               </div>
               <div class="form-group">
                 <label for="codigo">Código</label>
-                <input type="number" class="form-control" id="codigo" name="codigo" required>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="codigo"
+                  name="codigo"
+                  required
+                  <?php if (isset($usuario_c_e)): ?>value="<?php echo $usuario_c_e->getCodigo() ?>" <?php endif; ?>>
               </div>
               <div class="form-group">
                 <label for="horas">Horas</label>
-                <input type="number" class="form-control" id="horas" name="horas" required>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="horas"
+                  name="horas"
+                  required
+                  <?php if (isset($usuario_c_e)): ?>value="<?php echo $usuario_c_e->getHoras() ?>" <?php endif; ?>>
               </div>
               <div class="form-group">
                 <label for="email">E-mail</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  required
+                  <?php if (isset($usuario_c_e)): ?>value="<?php echo $usuario_c_e->getEmail() ?>" <?php endif; ?>>
               </div>
               <div class="form-group">
                 <label for="contrasena">Contraseña</label>
-                <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="contrasena"
+                  name="contrasena"
+                  <?php if (!isset($usuario_c_e)): ?>required<?php endif; ?>>
               </div>
               <div class="form-group">
                 <label for="rol">Rol</label>
                 <select class="form-control" id="rol" name="rol">
-                  <option value="user">Usuario</option>
-                  <option value="admin">Admin</option>
+                  <option
+                    value="user"
+                    <?php if (isset($usuario_c_e) && $usuario_c_e->getRol() === "user"): ?>selected<?php endif; ?>>
+                    Usuario
+                  </option>
+                  <option
+                    value="admin"
+                    <?php if (isset($usuario_c_e) && $usuario_c_e->getRol() === "admin"): ?>selected<?php endif; ?>>
+                    Admin
+                  </option>
                 </select>
               </div>
-              <button type="submit" class="btn btn-primary mt-3">Crear usuario</button>
+              <button type="submit" class="btn btn-primary mt-3">
+                <?php if (isset($usuario_c_e)): ?>
+                  Editar usuario
+                <?php else: ?>
+                  Crear usuario
+                <?php endif; ?>
+              </button>
             </form>
           </div>
         </div>
@@ -144,7 +228,7 @@
                 <td><?php echo $usuario_tabla["rol"] ?></td>
                 <td>
                   <a
-                    href="gestionusuarios.php?id=<?php echo $usuario_tabla["id"] ?>&amp;accion=editar"
+                    href="gestionusuarios.php?id=<?php echo $usuario_tabla["id"] ?>&amp;accion=cargar_editar"
                     class="btn btn-warning btn-sm">
                     Editar</a>
                   <a
