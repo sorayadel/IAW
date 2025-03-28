@@ -13,10 +13,11 @@ if (session_status() === PHP_SESSION_NONE) {
 </head>
 
 <body>
+  <?php require_once "cabecera.php"; ?>
+  
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <?php require_once "cabecera.php"; ?>
 
         <?php if (isset($_SESSION['error'])): ?>
           <div class="alert alert-danger" role="alert">

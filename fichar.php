@@ -6,12 +6,11 @@
 </head>
 
 <body>
+  <?php require_once "cabecera.php"; ?>
+  
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <?php
-        require_once "cabecera.php";
-        ?>
         Hola usuario
       </div>
     </div>
