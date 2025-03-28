@@ -12,11 +12,11 @@
       <?php require_once "headContenido.php"; ?>
     </head>
     <body>
-      <?php require_once "cabecera.php"; ?>
       <div class="container">
         <div class="row">
           <div class="col-12">
-
+            <?php require_once "cabecera.php"; ?>
+            
             <?php if ($error): ?>
               <div class="alert alert-danger" role="alert">
                 <?php echo $error; ?>
@@ -66,18 +66,15 @@
               }
             ?>
             <form method="POST" name="login">
-              <div class="#">
+              <div>
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" name="email" aria-describedby="emailHelp">
               </div>
-
-              <div class="#">
+              <div>
                 <label for="pass" class="form-label">Contraseña</label>
                 <input type="password" class="form-control" name="pass">
               </div>
-
-                <button type="submit" class="#" name= "login" value="login">Login</button>
-                
+              <button type="submit" class="btn btn-primary mt-2" name= "login" value="login">Login</button>
             </form>
           </div>
         </div>
