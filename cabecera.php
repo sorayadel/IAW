@@ -19,15 +19,14 @@
       <?php elseif (isset($_SESSION["usuario"]) && $_SESSION["usuario"]["rol"] === "user"): ?>
         <nav class="nav">
           <a class="nav-link" href="fichar.php">Mis fichadas</a>
-          <a class="nav-link" href="datosusuarios.php">Mis datos</a>
         </nav>
       <?php endif; ?>
     </div>
     <div class="col-md-6 d-flex justify-content-end align-items-center">
       <?php if (isset($_SESSION["usuario"])): ?>
-        <button class="btn btn-outline-success me-2">
+        <a href="datosusuarios.php" class="btn btn-outline-success me-2">
           Información usuario: <?php echo $_SESSION["usuario"]["nombre"] ?>
-        </button>
+        </a>
         <a href="logout.php" class="btn btn-outline-danger">
           Logout
         </a>
