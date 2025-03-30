@@ -19,6 +19,7 @@
       <?php elseif (isset($_SESSION["usuario"]) && $_SESSION["usuario"]["rol"] === "user"): ?>
         <nav class="nav">
           <a class="nav-link" href="fichar.php">Mis fichadas</a>
+          <a class="nav-link" href="datosusuarios.php">Mis datos</a>
         </nav>
       <?php endif; ?>
     </div>
