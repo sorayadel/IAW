@@ -92,6 +92,14 @@
               header("Location: gestionusuarios.php");
               die;
             } else {
+              $usuario_actualizado = new Usuario();
+              $usuario_actualizado->cargar($_GET["id"]);
+              $_SESSION['usuario']["id"] = $usuario_actualizado->getId();
+              $_SESSION['usuario']["nombre"] = $usuario_actualizado->getNombre();
+              $_SESSION['usuario']["email"] = $usuario_actualizado->getEmail();
+              $_SESSION['usuario']["codigo"] = $usuario_actualizado->getCodigo();
+              $_SESSION['usuario']["horas"] = $usuario_actualizado->getHoras();
+              $_SESSION['usuario']["rol"] = $usuario_actualizado->getRol();
               $_SESSION["mensaje"] = "Usuario actualizado con éxito";
               header("Location: gestionusuarios.php");
               die;
