@@ -49,6 +49,11 @@ class Usuario extends Conexion
         return $this->email;
     }
 
+    public function getPass()
+    {
+        return $this->pass;
+    }
+
     public function getCodigo()
     {
         return $this->codigo;
@@ -133,41 +138,67 @@ class Usuario extends Conexion
 
     public function editar($id_usuario, $nuevos_datos)
     {
+        // Cargamos los datos actuales del usuario
         $usuario = new Usuario();
         $usuario->cargar($id_usuario);
         $campos_actualizar = [];
 
-        foreach ($nuevos_datos as $campo => $nuevo_valor) {
-            // Convertir el nombre del campo a método getter (ej: 'nombre' -> 'getNombre')
-            $getter = 'get' . ucfirst($campo);
-
-            // Verificar si el método existe en la clase Usuario
-            if (method_exists($usuario, $getter)) {
-                $valor_actual = $usuario->$getter();
-
-                // Comparar valores y agregar solo los que han cambiado
-                if ($nuevo_valor !== null && $nuevo_valor !== $valor_actual) {
-                    $campos_actualizar[$campo] = $nuevo_valor;
-                }
-            }
-        }
-
-        if (empty($campos_actualizar)) {
+        if (!$usuario) {
             return false;
         }
 
-        // Construir la consulta SQL dinámicamente
-        $setClause = implode(", ", array_map(fn($campo) => "$campo = :$campo", array_keys($campos_actualizar)));
-        $sql = "UPDATE usuarios SET $setClause WHERE id = :id";
+        // Creamos las variables de los nuevos valores
+        $valores = ['id' => $id_usuario];
+        $nuevoNombre = $nuevos_datos["nombre"] ?? null;
+        $nuevoCodigo = $nuevos_datos["codigo"] ?? null;
+        $nuevoHoras = $nuevos_datos["horas"] ?? null;
+        $nuevoEmail = $nuevos_datos["email"] ?? null;
+        $nuevoContrasena = $nuevos_datos["contrasena"] ?? null;
+        $nuevoRol = $nuevos_datos["rol"] ?? null;
 
-        // Agregar el ID al array de valores
-        $campos_actualizar['id'] = $id_usuario;
+        // Comprobamos que los valores no estén vacíos y sean diferentes a los actuales para actualizarlos
+        if (!empty($nuevoNombre) && $nuevoNombre !== $usuario->getNombre()) {
+            $campos_actualizar[] = "nombre = :nombre";
+            $valores['nombre'] = $nuevoNombre;
+        }
 
-        // Ejecutar la consulta
-        $bd_conexion = $this->conecta()->prepare($sql);
-        $bd_conexion->execute($campos_actualizar);
+        if (!empty($nuevoCodigo) && $nuevoCodigo !== $usuario->getCodigo()) {
+            $campos_actualizar[] = "codigo = :codigo";
+            $valores['codigo'] = $nuevoCodigo;
+        }
 
-        return true;
+        if (!empty($nuevoHoras) && $nuevoHoras !== $usuario->getHoras()) {
+            $campos_actualizar[] = "horas = :horas";
+            $valores['horas'] = $nuevoHoras;
+        }
+
+        if (!empty($nuevoEmail) && $nuevoEmail !== $usuario->getEmail()) {
+            $campos_actualizar[] = "email = :email";
+            $valores['email'] = $nuevoEmail;
+        }
+
+        if (!empty($nuevoContrasena) && $nuevoContrasena !== $usuario->getPass()) {
+            $campos_actualizar[] = "password = :password";
+            $hashpass = md5($nuevoContrasena);
+            $valores['password'] = $hashpass;
+        }
+
+        if (!empty($nuevoRol) && $nuevoRol !== $usuario->getRol()) {
+            $campos_actualizar[] = "rol = :rol";
+            $valores['rol'] = $nuevoRol;
+        }
+
+        // Si no hay cambios, no se ejecuta la consulta
+        if (!empty($campos_actualizar)) {
+            // Construimos la consulta
+            $sql = "UPDATE usuarios SET " . implode(", ", $campos_actualizar) . " WHERE id = :id";
+            $bd_conexion = $this->conecta()->prepare($sql);
+            $bd_conexion->execute($valores);
+            
+            return true;
+        } else {
+            return true;
+        }
     }
 
     public function crear($nombre, $codigo, $horas, $email, $contrasena, $rol)

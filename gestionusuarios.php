@@ -177,7 +177,12 @@
               </div>
               <div class="form-group">
                 <label for="rol">Rol</label>
-                <select class="form-control" id="rol" name="rol">
+                <select
+                  class="form-control"
+                  id="rol"
+                  name="rol"
+                  <?php if (isset($usuario_c_e) && $usuario_c_e->getId() === $_SESSION["usuario"]["id"]): ?>disabled<?php endif; ?>
+                >
                   <option
                     value="user"
                     <?php if (isset($usuario_c_e) && $usuario_c_e->getRol() === "user"): ?>selected<?php endif; ?>>
