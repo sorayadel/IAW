@@ -17,6 +17,10 @@
           session_start();
         }
         require_once "clsUsuario.php";
+        if($_SESSION["usuario"]["rol"] !== "admin") {
+          header("Location: fichar.php");
+          die;
+        }
         ?>
 
         <?php if (isset($_SESSION['error'])): ?>
