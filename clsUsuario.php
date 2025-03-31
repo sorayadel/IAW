@@ -23,7 +23,7 @@ class Usuario extends Conexion
 
     if (!$respuesta) return false;
 
-    $this->id = $respuesta["id"];
+    $this->id = $respuesta["id_usuario"];
     $this->nombre = $respuesta["Nombre"];
     $this->email = $respuesta["Email"];
     $this->pass = null;
@@ -106,7 +106,7 @@ class Usuario extends Conexion
 
   public function listar()
   {
-    $sql = "SELECT id, nombre, email, codigo, horas, rol FROM usuarios";
+    $sql = "SELECT id_usuario, nombre, email, codigo, horas, rol FROM usuarios";
     $bd_conexion = $this->conecta()->prepare($sql);
     $bd_conexion->execute();
     $respuesta = $bd_conexion->fetchAll(PDO::FETCH_ASSOC);
@@ -118,7 +118,7 @@ class Usuario extends Conexion
 
   public function cargar($id_usuario)
   {
-    $sql = "SELECT id, nombre, codigo, horas, email, password, rol FROM usuarios WHERE id = :id";
+    $sql = "SELECT id_usuario, nombre, codigo, horas, email, password, rol FROM usuarios WHERE id_usuario = :id";
     $bd_conexion = $this->conecta()->prepare($sql);
     $bd_conexion->bindParam(':id', $id_usuario);
     $bd_conexion->execute();
@@ -126,7 +126,7 @@ class Usuario extends Conexion
 
     if (!$respuesta) return false;
 
-    $this->setId($respuesta["id"]);
+    $this->setId($respuesta["id_usuario"]);
     $this->setNombre($respuesta["nombre"]);
     $this->setCodigo($respuesta["codigo"]);
     $this->setHoras($respuesta["horas"]);
@@ -149,7 +149,7 @@ class Usuario extends Conexion
     }
 
     // Creamos las variables de los nuevos valores
-    $valores = ['id' => $id_usuario];
+    $valores = ['id_usuario' => $id_usuario];
     $nuevoNombre = $nuevos_datos["nombre"] ?? null;
     $nuevoCodigo = $nuevos_datos["codigo"] ?? null;
     $nuevoHoras = $nuevos_datos["horas"] ?? null;
@@ -192,7 +192,7 @@ class Usuario extends Conexion
     // Si no hay cambios, no se ejecuta la consulta
     if (!empty($campos_actualizar)) {
       // Construimos la consulta
-      $sql = "UPDATE usuarios SET " . implode(", ", $campos_actualizar) . " WHERE id = :id";
+      $sql = "UPDATE usuarios SET " . implode(", ", $campos_actualizar) . " WHERE id_usuario = :id";
       $bd_conexion = $this->conecta()->prepare($sql);
       $bd_conexion->execute($valores);
 
@@ -232,7 +232,7 @@ class Usuario extends Conexion
 
   public function eliminar($id_usuario)
   {
-    $sql = "DELETE FROM usuarios WHERE id = :id";
+    $sql = "DELETE FROM usuarios WHERE id_usuario = :id";
     $bd_conexion = $this->conecta()->prepare($sql);
     $bd_conexion->bindParam(':id', $id_usuario);
     $respuesta = $bd_conexion->execute();
@@ -273,7 +273,7 @@ class Usuario extends Conexion
     $id = $usuario->getId();
     $hashpass = md5($contrasena_nueva);
 
-    $sql = "UPDATE usuarios SET password = :password WHERE id = :id";
+    $sql = "UPDATE usuarios SET password = :password WHERE id_usuario = :id";
     $bd_conexion = $this->conecta()->prepare($sql);
     $bd_conexion->bindParam(':id', $id);
     $bd_conexion->bindParam(':password', $hashpass);
