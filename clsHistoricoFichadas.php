@@ -1,79 +1,252 @@
 <?php
-    require_once 'conexion.php';
-    require_once 'clsUsuario.php';
-    require_once 'fichar.php';
-    class User extends Conexion{
-        public $id;
-        public $nombre;
-        public $email;
-        public $pass;
-        public $rol;
-    }
+class HistoricoFichadas extends Conexion
+{
+  private $id;
+  private $fecha;
+  private $fichada_inicio_1;
+  private $fichada_inicio_2;
+  private $fichada_inicio_3;
+  private $fichada_inicio_4;
+  private $fichada_fin_1;
+  private $fichada_fin_2;
+  private $fichada_fin_3;
+  private $fichada_fin_4;
+  private $tiempo;
+  private $procesada;
+  private $usuario;
 
-    function registrarFichaje($usuario_id, $tipo) {
-        global $conn;
-        $sql = "INSERT INTO fichajes (usuario_id, tipo) VALUES (?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $usuario_id, $tipo);
-        return $stmt->execute();
-    }
+  public function getId()
+  {
+    return $this->id;
+  }
 
-    function obtenerHistorialFichajes($usuario_id = null) {
-        global $conn;
-        $sql = "SELECT f.id, u.nombre, f.fecha, f.tipo FROM fichajes f INNER JOIN usuarios u ON f.usuario_id = u.id";
-        if ($usuario_id !== null) {
-            $sql .= " WHERE f.usuario_id = ?";
-        }
-        $sql .= " ORDER BY f.fecha DESC";
-        
-        $stmt = $conn->prepare($sql);
-        if ($usuario_id !== null) {
-            $stmt->bind_param("i", $usuario_id);
-        }
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
+  public function setId($id)
+  {
+    $this->id = $id;
+  }
+
+  public function getFecha()
+  {
+    return $this->fecha;
+  }
+
+  public function setFecha($fecha)
+  {
+    $this->fecha = $fecha;
+  }
+
+  public function getFichadaInicio1()
+  {
+    return $this->fichada_inicio_1;
+  }
+
+  public function setFichadaInicio1($fichada_inicio_1)
+  {
+    $this->fichada_inicio_1 = $fichada_inicio_1;
+  }
+
+  public function getFichadaInicio2()
+  {
+    return $this->fichada_inicio_2;
+  }
+
+  public function setFichadaInicio2($fichada_inicio_2)
+  {
+    $this->fichada_inicio_2 = $fichada_inicio_2;
+  }
+
+  public function getFichadaInicio3()
+  {
+    return $this->fichada_inicio_3;
+  }
+
+  public function setFichadaInicio3($fichada_inicio_3)
+  {
+    $this->fichada_inicio_3 = $fichada_inicio_3;
+  }
+
+  public function getFichadaInicio4()
+  {
+    return $this->fichada_inicio_4;
+  }
+
+  public function setFichadaInicio4($fichada_inicio_4)
+  {
+    $this->fichada_inicio_4 = $fichada_inicio_4;
+  }
+
+  public function getFichadaFin1()
+  {
+    return $this->fichada_fin_1;
+  }
+
+  public function setFichadaFin1($fichada_fin_1)
+  {
+    $this->fichada_fin_1 = $fichada_fin_1;
+  }
+
+  public function getFichadaFin2()
+  {
+    return $this->fichada_fin_2;
+  }
+
+  public function setFichadaFin2($fichada_fin_2)
+  {
+    $this->fichada_fin_2 = $fichada_fin_2;
+  }
+
+  public function getFichadaFin3()
+  {
+    return $this->fichada_fin_3;
+  }
+
+  public function setFichadaFin3($fichada_fin_3)
+  {
+    $this->fichada_fin_3 = $fichada_fin_3;
+  }
+
+  public function getFichadaFin4()
+  {
+    return $this->fichada_fin_4;
+  }
+    
+  public function setFichadaFin4($fichada_fin_4)
+  {
+    $this->fichada_fin_4 = $fichada_fin_4;
+  }
+
+  public function getTiempo()
+  {
+    return $this->tiempo;
+  }
+
+  public function setTiempo($tiempo)
+  {
+    $this->tiempo = $tiempo;
+  }
+
+  public function getProcesada()
+  {
+    return $this->procesada;
+  }
+
+  public function setProcesada($procesada)
+  {
+    $this->procesada = $procesada;
+  }
+
+  public function getUsuario()
+  {
+    return $this->usuario;
+  }
+
+  public function setUsuario($usuario)
+  {
+    $this->usuario = $usuario;
+  }
+
+  /* Métodos */
+
+  public function listar()
+  {
+    //
+  }
+
+  public function cargar()
+  {
+    //
+  }
+
+  public function editar()
+  {
+    //
+  }
+
+  public function crear($id_usuario)
+  {
+    $usuario = new Usuario();
+    $usuario->cargar($id_usuario);
+
+    if ($usuario->getId() === null) {
+      throw new Exception("El usuario no existe.");
     }
     
-    // Función para eliminar un fichaje
-    function eliminarFichaje($fichaje_id) {
-        global $conn;
-        $sql = "DELETE FROM fichajes WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $fichaje_id);
-        return $stmt->execute();
+    $this->setUsuario($usuario);
+    $this->setFecha(date("Y-m-d"));
+    $this->setFichadaInicio1(date("H:i:s"));
+    $this->setFichadaFin1(null);
+    $this->setFichadaInicio2(null);
+    $this->setFichadaFin2(null);
+    $this->setFichadaInicio3(null);
+    $this->setFichadaFin3(null);
+    $this->setFichadaInicio4(null);
+    $this->setFichadaFin4(null);
+    $this->setTiempo(0);
+
+    $sql = "
+      INSERT INTO fichadas (
+        id_usuario,
+        fecha,
+        fichada_inicio_1,
+        fichada_fin_1,
+        fichada_inicio_2,
+        fichada_fin_2,
+        fichada_inicio_3,
+        fichada_fin_3,
+        fichada_inicio_4,
+        fichada_fin_4,
+        tiempo
+      ) 
+        VALUES (
+        :id_usuario,
+        :fecha,
+        :fichada_inicio_1,
+        :fichada_fin_1,
+        :fichada_inicio_2,
+        :fichada_fin_2,
+        :fichada_inicio_3,
+        :fichada_fin_3,
+        :fichada_inicio_4,
+        :fichada_fin_4,
+        :tiempo)";
+
+    $id_usuario = $this->getUsuario()->getId();
+    $fecha = $this->getFecha();
+    $fichada_inicio_1 = $this->getFichadaInicio1();
+    $fichada_fin_1 = $this->getFichadaFin1();
+    $fichada_inicio_2 = $this->getFichadaInicio2();
+    $fichada_fin_2 = $this->getFichadaFin2();
+    $fichada_inicio_3 = $this->getFichadaInicio3();
+    $fichada_fin_3 = $this->getFichadaFin3();
+    $fichada_inicio_4 = $this->getFichadaInicio4();
+    $fichada_fin_4 = $this->getFichadaFin4();
+    $tiempo = $this->getTiempo();
+
+    $bd_conexion = $this->conecta()->prepare($sql);
+    $bd_conexion->bindParam(':id_usuario', $id_usuario);
+    $bd_conexion->bindParam(':fecha', $fecha);
+    $bd_conexion->bindParam(':fichada_inicio_1', $fichada_inicio_1);
+    $bd_conexion->bindParam(':fichada_fin_1', $fichada_fin_1);
+    $bd_conexion->bindParam(':fichada_inicio_2', $fichada_inicio_2);
+    $bd_conexion->bindParam(':fichada_fin_2', $fichada_fin_2);
+    $bd_conexion->bindParam(':fichada_inicio_3', $fichada_inicio_3);
+    $bd_conexion->bindParam(':fichada_fin_3', $fichada_fin_3);
+    $bd_conexion->bindParam(':fichada_inicio_4', $fichada_inicio_4);
+    $bd_conexion->bindParam(':fichada_fin_4', $fichada_fin_4);
+    $bd_conexion->bindParam(':tiempo', $tiempo);
+
+    $respuesta = $bd_conexion->execute();
+
+    if (!$respuesta) {
+      throw new Exception("Error al registrar la fichada.");
     }
-    
-    // Función para actualizar un fichaje
-    function actualizarFichaje($fichaje_id, $tipo) {
-        global $conn;
-        $sql = "UPDATE fichajes SET tipo = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $tipo, $fichaje_id);
-        return $stmt->execute();
-    }
 
-    $usuario_id = $_SESSION['usuario_id'];  // Supongamos que usas sesiones para el usuario, impedir que fiche dos veces seguidas.
-    $ultimo_fichaje = $conexion->query("SELECT tipo_fichaje FROM fichajes WHERE usuario_id = '$usuario_id' ORDER BY fecha DESC LIMIT 1");
-    
-    if ($ultimo_fichaje->num_rows > 0) {
-        $ultimo = $ultimo_fichaje->fetch_assoc();
-        if ($ultimo['tipo_fichaje'] == 'entrada') {
-            echo "Ya has fichado la entrada, debes fichar la salida antes de volver a fichar la entrada.";
-            exit();
-        }
-    }
+    return $bd_conexion->execute();
+  }
 
-    $tipo_fichaje = $_POST['tipo_fichaje'];  // Entrada o salida, según lo que el usuario seleccione
-    $usuario_id = $_SESSION['usuario_id'];
+  public function eliminar()
+  {
+    //
+  }
 
-    $sql = "INSERT INTO fichajes (usuario_id, tipo_fichaje, fecha) 
-            VALUES ('$usuario_id', '$tipo_fichaje', NOW())";
-
-    if ($conexion->query($sql) === TRUE) {
-        echo "Fichaje registrado con éxito.";
-    } else {
-        echo "Error al registrar el fichaje: " . $conexion->error;
-    }
-
-    ?>
+}
