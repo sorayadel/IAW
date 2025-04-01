@@ -24,12 +24,12 @@ class Usuario extends Conexion
     if (!$respuesta) return false;
 
     $this->id = $respuesta["id_usuario"];
-    $this->nombre = $respuesta["Nombre"];
-    $this->email = $respuesta["Email"];
+    $this->nombre = $respuesta["nombre"];
+    $this->email = $respuesta["email"];
     $this->pass = null;
-    $this->codigo = $respuesta["Codigo"];
-    $this->horas = $respuesta["Horas"];
-    $this->rol = $respuesta["Rol"];
+    $this->codigo = $respuesta["codigo"];
+    $this->horas = $respuesta["horas"];
+    $this->rol = $respuesta["rol"];
 
     return true;
   }

@@ -44,19 +44,19 @@
 
         <?php if (isset($_GET["accion"]) && $_GET["accion"] === "fichar"): ?>
           <?php
-          // $fichada = new HistoricoFichadas();
+          $fichada = new HistoricoFichadas();
 
-          // try {
-          //   $respuestaFichar = $fichada->crear($usuario->getId());
-          // } catch (Exception $e) {
-          //   $_SESSION["error"] = $e->getMessage();
-          //   header("Location: fichar.php");
-          //   die;
-          // }
+          try {
+            $respuestaFichar = $fichada->crear($usuario->getId());
+          } catch (Exception $e) {
+            $_SESSION["error"] = $e->getMessage();
+            header("Location: fichar.php");
+            die;
+          }
 
-          // if ($respuestaFichar) {
-          //   $_SESSION["mensaje"] = "Fichada registrada correctamente.";
-          // }
+          if ($respuestaFichar) {
+            $_SESSION["mensaje"] = "Fichada registrada correctamente.";
+          }
 
           header("Location: fichar.php");
           die;
