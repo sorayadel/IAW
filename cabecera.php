@@ -11,6 +11,11 @@
 
   <div class="row">
     <div class="col-6">
+      <?php if (!isset($_SESSION["usuario"])): ?>
+        <nav class="nav">
+          <a class="nav-link" href="index.php">Login</a>
+        </nav>
+      <?php endif; ?>
       <?php if (isset($_SESSION["usuario"]) && $_SESSION["usuario"]["rol"] === "admin"): ?>
         <nav class="nav">
           <a class="nav-link" href="gestionusuarios.php">Listado usuarios</a>
