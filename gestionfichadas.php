@@ -28,7 +28,7 @@
         require_once "clsUsuario.php";
         ?>
 
-        Hola administrador
+        <h1>Listado fichadas</h1>
       </div>
     </div>
   </div>

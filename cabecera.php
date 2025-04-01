@@ -20,7 +20,8 @@
         <nav class="nav">
           <a class="nav-link" href="fichar.php">Mis fichadas</a>
           <a class="nav-link" href="gestionusuarios.php">Listado usuarios</a>
-          <a class="nav-link" href="gestionfichadas.php">Gestion fichadas</a>
+          <a class="nav-link" href="gestionhistoricofichadas.php">Histórico fichadas</a>
+          <a class="nav-link" href="gestionfichadas.php">Listado fichadas</a>
         </nav>
       <?php elseif (isset($_SESSION["usuario"]) && $_SESSION["usuario"]["rol"] === "user"): ?>
         <nav class="nav">

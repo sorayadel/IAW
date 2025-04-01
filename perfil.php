@@ -170,31 +170,7 @@
 
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-12">
-        <div class="card mt-3">
-          <div class="card-body">
-            <table class="table table-striped mt-3">
-              <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Hora inicio</th>
-                  <th>Hora fin</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Test</td>
-                  <td>Test</td>
-                  <td>Test</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
+    
   </div>
 </body>
 
