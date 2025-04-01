@@ -124,14 +124,14 @@ class Fichadas extends Conexion
     $this->tiempo = $tiempo;
   }
 
-  public function getUsuario()
+  public function getIdUsuario()
   {
-    return $this->usuario;
+    return $this->id_usuario;
   }
 
-  public function setUsuario($usuario)
+  public function setIdUsuario($id_usuario)
   {
-    $this->usuario = $usuario;
+    $this->id_usuario = $id_usuario;
   }
 
   /* Métodos */
