@@ -247,12 +247,12 @@
                 <td><?php echo $usuario_tabla["rol"] ?></td>
                 <td>
                   <a
-                    href="gestionusuarios.php?id=<?php echo $usuario_tabla["id"] ?>&amp;accion=cargar_editar"
+                    href="gestionusuarios.php?id=<?php echo $usuario_tabla["id_usuario"] ?>&amp;accion=cargar_editar"
                     class="btn btn-warning btn-sm">
                     Editar</a>
                   <a
-                    href="gestionusuarios.php?id=<?php echo $usuario_tabla["id"] ?>&amp;accion=eliminar"
-                    class="btn btn-danger btn-sm <?php if ($usuario_tabla["id"] === $_SESSION["usuario"]["id"]): ?>disabled<?php endif; ?>">
+                    href="gestionusuarios.php?id=<?php echo $usuario_tabla["id_usuario"] ?>&amp;accion=eliminar"
+                    class="btn btn-danger btn-sm <?php if ($usuario_tabla["id_usuario"] === $_SESSION["usuario"]["id"]): ?>disabled<?php endif; ?>">
                     Borrar
                   </a>
                 </td>
