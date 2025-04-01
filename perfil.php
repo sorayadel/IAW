@@ -16,6 +16,12 @@
         if (session_status() === PHP_SESSION_NONE) {
           session_start();
         }
+
+        if (!isset($_SESSION["usuario"])) {
+          header("Location: index.php");
+          die;
+        }
+
         require_once "clsUsuario.php";
         ?>
 
@@ -56,17 +62,17 @@
 
             } catch (Exception $e) {
               $_SESSION["error"] = $e->getMessage();
-              header("Location: datosusuarios.php");
+              header("Location: perfil.php");
               die;
             }
             
             if (!$respuestaEditar) {
               $_SESSION["error"] = "Error al editar la contraseña";
-              header("Location: datosusuarios.php");
+              header("Location: perfil.php");
               die;
             } else {
               $_SESSION["mensaje"] = "Contraseña actualizada con éxito";
-              header("Location: datosusuarios.php");
+              header("Location: perfil.php");
               die;
             }
           }
@@ -124,7 +130,7 @@
             <h5 class="card-title">Modificar contraseña</h5>
             <form
               method="POST"
-              action="datosusuarios.php?accion=editar_contrasena&id=<?php echo $usuario->getId() ?>">
+              action="perfil.php?accion=editar_contrasena&id=<?php echo $usuario->getId() ?>">
               <div class="form-group">
                 <label for="contrasena_actual">Contraseña actual *</label>
                 <input

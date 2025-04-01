@@ -149,7 +149,7 @@ class Usuario extends Conexion
     }
 
     // Creamos las variables de los nuevos valores
-    $valores = ['id_usuario' => $id_usuario];
+    $valores = ['id' => $id_usuario];
     $nuevoNombre = $nuevos_datos["nombre"] ?? null;
     $nuevoCodigo = $nuevos_datos["codigo"] ?? null;
     $nuevoHoras = $nuevos_datos["horas"] ?? null;
@@ -194,6 +194,7 @@ class Usuario extends Conexion
       // Construimos la consulta
       $sql = "UPDATE usuarios SET " . implode(", ", $campos_actualizar) . " WHERE id_usuario = :id";
       $bd_conexion = $this->conecta()->prepare($sql);
+      var_dump($campos_actualizar, $valores);
       $bd_conexion->execute($valores);
 
       return true;

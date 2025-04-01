@@ -2,7 +2,6 @@
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +13,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <body>
   <?php require_once "cabecera.php"; ?>
-  
+
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -25,8 +24,6 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php unset($_SESSION['error']); ?>
           </div>
         <?php endif; ?>
-
-        <h1>Login</h1>
 
         <?php
         if (isset($_POST['login'])) {
@@ -69,17 +66,23 @@ if (session_status() === PHP_SESSION_NONE) {
           }
         }
         ?>
-        <form method="POST" name="login">
-          <div>
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" required>
-          </div>
-          <div>
-            <label for="pass" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" name="pass">
-          </div>
-          <button type="submit" class="btn btn-primary mt-2" name="login" value="login" required>Login</button>
-        </form>
+        <?php if (!isset($_SESSION["usuario"])): ?>
+          <h1>Login</h1>
+
+          <form method="POST" name="login">
+            <div>
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" name="email" required>
+            </div>
+            <div>
+              <label for="pass" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" name="pass">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2" name="login" value="login" required>Login</button>
+          </form>
+        <?php else: ?>
+          <h1>Bienvenido/a <?php echo $_SESSION['usuario']['nombre']; ?></h1>
+        <?php endif; ?>
       </div>
     </div>
   </div>
