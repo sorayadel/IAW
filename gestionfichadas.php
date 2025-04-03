@@ -42,12 +42,19 @@
             <?php unset($_SESSION['mensaje']); ?>
           </div>
         <?php endif; ?>
-        
+
         <?php
         $usuario = new Usuario();
         $usuario->cargar($_SESSION["usuario"]["id"]);
 
         $listado_fichadas = new Fichadas();
+        try {
+          $listado_fichadas = $listado_fichadas->cargar();
+        } catch (Exception $e) {
+          $_SESSION['error'] = $e->getMessage();
+          header("Location: gestionfichadas.php");
+          exit;
+        }
         ?>
 
         <h1>Listado fichadas</h1>
@@ -69,6 +76,68 @@
               <th>Tiempo</th>
             </tr>
           </thead>
+          <tbody>
+            <?php foreach ($listado_fichadas as $fichada): ?>
+              <tr>
+                <td>#</td>
+                <td><?php echo $fichada["codigo"] ?></td>
+                <td><?php echo $fichada["nombre"] ?></td>
+                <td><?php echo $fichada["fecha"] ?></td>
+                <td>
+                  <?php if (isset($fichada["fichada_inicio_1"])): ?>
+                    <?php echo $fichada["fichada_inicio_1"]; ?>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <?php if (isset($fichada["fichada_fin_1"])): ?>
+                    <?php echo $fichada["fichada_fin_1"]; ?>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <?php if (isset($fichada["fichada_inicio_2"])): ?>
+                    <?php echo $fichada["fichada_inicio_2"]; ?>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <?php if (isset($fichada["fichada_fin_2"])): ?>
+                    <?php echo $fichada["fichada_fin_2"]; ?>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <?php if (isset($fichada["fichada_inicio_3"])): ?>
+                    <?php echo $fichada["fichada_inicio_3"]; ?>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <?php if (isset($fichada["fichada_fin_3"])): ?>
+                    <?php echo $fichada["fichada_fin_3"]; ?>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <?php if (isset($fichada["fichada_inicio_4"])): ?>
+                    <?php echo $fichada["fichada_inicio_4"]; ?>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <?php if (isset($fichada["fichada_fin_4"])): ?>
+                    <?php echo $fichada["fichada_fin_4"]; ?>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <a
+                    href="gestionfichadas.php"
+                    class="btn btn-warning btn-sm">
+                    Editar</a>
+                  <a
+                    href="gestionfichadas.php"
+                    class="btn btn-danger btn-sm">
+                    Borrar
+                  </a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
