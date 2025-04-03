@@ -50,7 +50,7 @@
         $historico_fichadas = new HistoricoFichadas();
 
         try {
-          $fichadas_usuario = $historico_fichadas->cargar($usuario->getId());
+          $fichadas_usuario = $historico_fichadas->cargar();
         } catch (Exception $e) {
           $_SESSION['error'] = $e->getMessage();
           header("Location: gestionhistoricofichadas.php");
@@ -78,9 +78,15 @@
                     <?php foreach ($fichadas_usuario as $fichada): ?>
                       <tr>
                         <td><?php echo $fichada["fecha"]  ?></td>
-                        <td><?php echo $usuario->getCodigo() ?></td>
-                        <td><?php echo $usuario->getNombre() ?></td>
-                        <td><?php echo $fichada["procesada"] ?></td>
+                        <td><?php echo $fichada["id_usuario"] ?></td>
+                        <td><?php echo $fichada["nombre"] ?></td>
+                        <td>
+                          <?php if ($fichada["procesada"] == 0): ?>
+                            No
+                          <?php else: ?>
+                            Sí
+                          <?php endif; ?>
+                        </td>
                         <td>
                           <a
                             href="#"

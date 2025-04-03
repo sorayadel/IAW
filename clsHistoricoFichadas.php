@@ -42,21 +42,32 @@ class HistoricoFichadas extends Conexion {
 
     // Métodos
 
-    public function cargar($id_usuario) {
-        if(!isset($id_usuario)) {
-            throw new Exception("El ID de usuario no puede ser nulo.");
+    public function cargar($id_usuario = null) {
+        if ($id_usuario !== null) {
+            $sql = "
+                SELECT *
+                FROM historico_fichadas hf
+                LEFT JOIN usuarios u ON hf.id_usuario = u.id_usuario
+                WHERE hf.id_usuario = :id_usuario
+                ORDER BY fecha DESC";
+            $bd_conexion = $this->conecta()->prepare($sql);
+            $bd_conexion->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+        } else {
+            $sql = "
+            SELECT *
+            FROM historico_fichadas hf
+            LEFT JOIN usuarios u ON hf.id_usuario = u.id_usuario
+            ORDER BY fecha DESC";
+            $bd_conexion = $this->conecta()->prepare($sql);
         }
-
-        $sql = "SELECT * FROM historico_fichadas WHERE id_usuario = :id_usuario ORDER BY fecha DESC";
-        $bd_conexion = $this->conecta()->prepare($sql);
-        $bd_conexion->bindParam(':id_usuario', $id_usuario);
+    
         $bd_conexion->execute();
         $fichadas = $bd_conexion->fetchAll(PDO::FETCH_ASSOC);
-
+    
         if ($fichadas) {
             return $fichadas;
         } else {
-            throw new Exception("No se encontró la fichada para el usuario con ID: " . $id_usuario);
+            throw new Exception("No se encontraron fichadas.");
         }
     }
 
